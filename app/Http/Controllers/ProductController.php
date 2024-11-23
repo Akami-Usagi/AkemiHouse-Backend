@@ -24,22 +24,43 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         // Validar los datos recibidos
-        $validatedData = $request->validate([
+        $request->validate([
             'name' => 'required|string', // Cambia según tus necesidades
             'description' => 'required|string',
             'stock' => 'required|integer',
             'price' => 'required|integer',
             'category_id' => 'required|integer',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
         ]);
 
-        // Crear un nuevo registro en la base de datos
-        $data = Product::create($validatedData);
+        if ($request->hasFile("image")) {
+            $file = $request->file("image");
+            $destinationPath = public_path('storage/products');
+            $filename = time() . '.' . $file->getClientOriginalExtension();
+            $file->move($destinationPath, $filename);
+            $path = 'storage/products/' . $filename;
+        } else {
+            $path = null;
+        }
+        
 
-        // Retornar una respuesta
+        // Crear un nuevo registro en la base de datos
+        $product = Product::create([
+            'name' => $request->name,
+            'description' => $request->description,
+            'stock' => $request->stock,
+            'price' => $request->price,
+            'category_id' => $request->category_id,
+            'image_path' => $path,
+        ]);
+
+        
+
+        //Retornar una respuesta
         return response()->json([
             'message' => 'Datos guardados con éxito',
-            'data' => $data,
-        ], 201);
+            'data' => $product,
+        ]);
     }
 
     /**
