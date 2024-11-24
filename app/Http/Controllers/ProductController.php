@@ -88,7 +88,7 @@ class ProductController extends Controller
     public function update(Request $request, $id)
 {
 
-        dd($request->all());
+        
 
         // Validar los datos del request
         $request->validate([
