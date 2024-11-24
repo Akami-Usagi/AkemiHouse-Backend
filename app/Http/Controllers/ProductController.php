@@ -66,17 +66,55 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Product $product)
+    public function show($id)
     {
-        //
+         // Encuentra la categoría por ID
+        $product = Product::find($id);
+
+        // Si no existe, retorna un error 404
+        if (!$product) {
+            return response()->json(['message' => 'Categoría no encontrada'], 404);
+        }
+
+        // Retorna la categoría en formato JSON
+        return response()->json($product, 200);
+
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Product $product)
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'name' => 'required|string', // Cambia según tus necesidades
+            'description' => 'required|string',
+            'stock' => 'required|integer',
+            'price' => 'required|integer',
+            'category_id' => 'required|integer',
+            'image_path' => 'required|string',
+        ]);
+
+
+        // Buscar el producto por ID
+        $product = Product::findOrFail($id);
+
+         // Actualizar los datos
+        $product->name = $request->name;
+        $product->description = $request->description;
+        $product->stock = $request->stock;
+        $product->price = $request->price;
+        $product->category_id = $request->category_id;
+        $product->image_path = $request->image_path;    
+
+        $product->save();
+
+        return response()->json([
+            'message' => 'Producto actualizado con éxito',
+            'product' => $product
+        ]);
+
+
     }
 
     /**
