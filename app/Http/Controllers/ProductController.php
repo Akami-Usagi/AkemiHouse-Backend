@@ -88,8 +88,6 @@ class ProductController extends Controller
     public function update(Request $request, $id)
 {
 
-        
-
         // Validar los datos del request
         $request->validate([
             'name' => 'required|string',
@@ -134,8 +132,25 @@ class ProductController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Product $product)
+    public function destroy($id)
     {
-        //
+         // Encuentra el producto por ID
+        $product = Product::find($id);
+
+        // Si no existe, retorna un error 404
+        if (!$product) {
+            return response()->json(['message' => 'Producto no encontrado'], 404);
+        }
+
+        // Eliminar la imagen si existe
+        if ($product->image_path && Storage::exists(public_path($product->image_path))) {
+            Storage::delete(public_path($product->image_path));
+        }
+
+        // Eliminar el producto de la base de datos
+        $product->delete();
+
+        // Retornar una respuesta exitosa
+        return response()->json(['message' => 'Producto eliminado con éxito']);
     }
 }
