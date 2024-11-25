@@ -31,19 +31,8 @@ class ProductController extends Controller
             'stock' => 'required|integer',
             'price' => 'required|integer',
             'category_id' => 'required|integer',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
+            'image_id' => 'required|integer',
         ]);
-
-        if ($request->hasFile("image")) {
-            $file = $request->file("image");
-            $destinationPath = public_path('storage/products');
-            $filename = time() . '.' . $file->getClientOriginalExtension();
-            $file->move($destinationPath, $filename);
-            $path = 'products/' . $filename;
-        } else {
-            $path = null;
-        }
-        
 
         // Crear un nuevo registro en la base de datos
         $product = Product::create([
@@ -52,7 +41,7 @@ class ProductController extends Controller
             'stock' => $request->stock,
             'price' => $request->price,
             'category_id' => $request->category_id,
-            'image_path' => $path,
+            'image_id' => $request->image_id,
         ]);
 
         
