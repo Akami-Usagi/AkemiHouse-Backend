@@ -39,7 +39,7 @@ class ProductController extends Controller
             $destinationPath = public_path('storage/products');
             $filename = time() . '.' . $file->getClientOriginalExtension();
             $file->move($destinationPath, $filename);
-            $path = 'storage/products/' . $filename;
+            $path = 'products/' . $filename;
         } else {
             $path = null;
         }
@@ -137,14 +137,12 @@ class ProductController extends Controller
          // Encuentra el producto por ID
         $product = Product::find($id);
 
-        // Si no existe, retorna un error 404
-        if (!$product) {
-            return response()->json(['message' => 'Producto no encontrado'], 404);
-        }
+         // Ruta absoluta del archivo en public/storage
+        $filePath = public_path('storage/' . $product->image_path);
 
-        // Eliminar la imagen si existe
-        if ($product->image_path && Storage::exists(public_path($product->image_path))) {
-            Storage::delete(public_path($product->image_path));
+        // Verifica si el archivo existe antes de eliminarlo
+        if (file_exists($filePath)) {
+            unlink($filePath); // Elimina el archivo
         }
 
         // Eliminar el producto de la base de datos
