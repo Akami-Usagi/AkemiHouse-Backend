@@ -32,6 +32,7 @@ class ProductController extends Controller
             'price' => 'required|integer',
             'category_id' => 'required|integer',
             'image_id' => 'required|integer',
+            'image_path' => 'required|string',
         ]);
 
         // Crear un nuevo registro en la base de datos
@@ -41,7 +42,8 @@ class ProductController extends Controller
             'stock' => $request->stock,
             'price' => $request->price,
             'category_id' => $request->category_id,
-            'image_id' => $request->image_id,
+            'image_id' => $request->category_id,
+            'image_path' => $request->image_path,
         ]);
 
         

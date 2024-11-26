@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('price')->default(0); // Campo de precio
             $table->foreignIdFor(\App\Models\Category::class)->constrained();
             $table->foreignIdFor(\App\Models\Image::class)->constrained();
+            $table->string('image_path')->nullable(); // Campo de descripción
             $table->timestamp('created_at')->nullable();
             $table->timestamp('updated_at')->nullable();
         });
