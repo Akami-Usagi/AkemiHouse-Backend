@@ -86,30 +86,23 @@ class ProductController extends Controller
             'stock' => 'required|integer',
             'price' => 'required|integer',
             'category_id' => 'required|integer',
-            'image' => 'nullable|file|mimes:jpg,jpeg,png|max:10240', // La imagen es opcional
+            'image_id' => 'required|integer',
+            'image_path' => 'required|string',
+            
         ]);
 
         // Buscar el producto por ID
         $product = Product::findOrFail($id);
 
-        // Manejar la imagen
-        if ($request->hasFile('image')) {
-            // Eliminar la imagen anterior si existe
-            if ($product->image_path && Storage::exists($product->image_path)) {
-                Storage::delete($product->image_path);
-            }
-
-            // Guardar la nueva imagen
-            $imagePath = $request->file('image')->store('products', 'public');
-            $product->image_path = $imagePath;
-        }
-
+        
         // Actualizar los datos
         $product->name = $request->name;
         $product->description = $request->description;
         $product->stock = $request->stock;
         $product->price = $request->price;
         $product->category_id = $request->category_id;
+        $product->image_id = $request->image_id;
+        $product->image_path = $request->image_path;
 
         // Guardar los cambios
         $product->save();

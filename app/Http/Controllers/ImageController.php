@@ -60,7 +60,7 @@ class ImageController extends Controller
 
         // Si no existe, retorna un error 404
         if (!$image) {
-            return response()->json(['message' => 'Categoría no encontrada'], 404);
+            return response()->json(['message' => 'Imagen no encontrada'], 404);
         }
 
         // Retorna la categoría en formato JSON
@@ -82,7 +82,7 @@ class ImageController extends Controller
     public function destroy($id)
     {
          // Encuentra el producto por ID
-        $image = Image::find($id);
+        $image = Image::findOrFail($id);
 
          // Ruta absoluta del archivo en public/storage
         $filePath = public_path('storage/' . $image->image_path);
