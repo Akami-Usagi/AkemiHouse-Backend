@@ -35,6 +35,7 @@ class ProductController extends Controller
             'image_path' => 'required|string',
         ]);
 
+        
         // Crear un nuevo registro en la base de datos
         $product = Product::create([
             'name' => $request->name,
@@ -42,7 +43,7 @@ class ProductController extends Controller
             'stock' => $request->stock,
             'price' => $request->price,
             'category_id' => $request->category_id,
-            'image_id' => $request->category_id,
+            'image_id' => $request->image_id,
             'image_path' => $request->image_path,
         ]);
 

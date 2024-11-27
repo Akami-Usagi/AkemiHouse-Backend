@@ -23,11 +23,12 @@ class ImageController extends Controller
         // Validar los datos recibidos
         $request->validate([
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
+            'path' => "required|string",
         ]);
 
         if ($request->hasFile("image")) {
             $file = $request->file("image");
-            $destinationPath = public_path('storage/products');
+            $destinationPath = public_path('storage/' . $request->path);
             $filename = time() . '.' . $file->getClientOriginalExtension();
             $file->move($destinationPath, $filename);
             $path = 'products/' . $filename;
