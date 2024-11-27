@@ -96,6 +96,6 @@ class ImageController extends Controller
         $image->delete();
 
         // Retornar una respuesta exitosa
-        return response()->json(['message' => 'Producto eliminado con éxito']);
+        return response()->json(['message' => 'Imagen eliminada satisfactoriamente']);
     }
 }
