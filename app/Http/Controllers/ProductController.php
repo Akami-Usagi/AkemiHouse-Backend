@@ -14,7 +14,7 @@ class ProductController extends Controller
     public function index()
     {
         // Obtén todos los productos 
-        $product = Product::all(); 
+        $product = Product::with(["category" , "image"])->get(); 
         // Devuelve los datos en formato JSON 
         return response()->json($product);
     }
@@ -32,7 +32,6 @@ class ProductController extends Controller
             'price' => 'required|integer',
             'category_id' => 'required|integer',
             'image_id' => 'required|integer',
-            'image_path' => 'required|string',
         ]);
 
         
@@ -44,7 +43,6 @@ class ProductController extends Controller
             'price' => $request->price,
             'category_id' => $request->category_id,
             'image_id' => $request->image_id,
-            'image_path' => $request->image_path,
         ]);
 
         
@@ -62,11 +60,11 @@ class ProductController extends Controller
     public function show($id)
     {
          // Encuentra la categoría por ID
-        $product = Product::find($id);
+        $product = Product::with(["category", "image"])->find($id);
 
         // Si no existe, retorna un error 404
         if (!$product) {
-            return response()->json(['message' => 'Categoría no encontrada'], 404);
+            return response()->json(['message' => 'Producto no encontrado'], 404);
         }
 
         // Retorna la categoría en formato JSON
@@ -88,7 +86,6 @@ class ProductController extends Controller
             'price' => 'required|integer',
             'category_id' => 'required|integer',
             'image_id' => 'required|integer',
-            'image_path' => 'required|string',
             
         ]);
 
@@ -103,7 +100,6 @@ class ProductController extends Controller
         $product->price = $request->price;
         $product->category_id = $request->category_id;
         $product->image_id = $request->image_id;
-        $product->image_path = $request->image_path;
 
         // Guardar los cambios
         $product->save();
@@ -122,16 +118,24 @@ class ProductController extends Controller
          // Encuentra el producto por ID
         $product = Product::find($id);
 
-         // Ruta absoluta del archivo en public/storage
-        $filePath = public_path('storage/' . $product->image_path);
+        $image = $product->image;
 
-        // Verifica si el archivo existe antes de eliminarlo
-        if (file_exists($filePath)) {
-            unlink($filePath); // Elimina el archivo
+        if ($image) {
+            // Ruta absoluta del archivo en public/storage
+            $filePath = public_path('storage/' . $image->image_path);
+    
+            // Verifica si el archivo existe antes de eliminarlo
+            if (file_exists($filePath)) {
+                unlink($filePath); // Elimina el archivo físico
+            }
+    
+            // Elimina el registro de la imagen de la base de datos
+            
         }
 
         // Eliminar el producto de la base de datos
         $product->delete();
+        $image->delete();
 
         // Retornar una respuesta exitosa
         return response()->json(['message' => 'Producto eliminado con éxito']);
