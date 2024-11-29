@@ -13,9 +13,8 @@ return new class extends Migration
     {
         Schema::create('images', function (Blueprint $table) {
             $table->id();
-            $table->string('image_path')->default("/images/placeholder_item.webp"); // Campo de descripción
-            $table->timestamp('created_at')->nullable();
-            $table->timestamp('updated_at')->nullable();
+            $table->string('image_path')->nullable(); // Campo de descripción
+            $table->timestamps();
         });
     }
 
