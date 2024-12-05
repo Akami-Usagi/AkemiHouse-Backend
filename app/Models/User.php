@@ -19,8 +19,11 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'document',
+        'phone',
         'email',
         'password',
+        "image_id",
     ];
 
     /**
@@ -44,5 +47,10 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function image()
+    {
+        return $this->belongsTo(Image::class, 'image_id', 'id');
     }
 }

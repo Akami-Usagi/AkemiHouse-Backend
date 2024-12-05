@@ -12,5 +12,10 @@ class Image extends Model
     {
         return $this->hasMany(Image::class, 'image_id', 'id');
     }
+
+    public function users()
+    {
+        return $this->hasMany(Image::class, 'image_id', 'id');
+    }
 }
 
