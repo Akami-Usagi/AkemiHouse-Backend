@@ -23,6 +23,8 @@ Route::post('/images', [ImageController::class, 'store']);
 Route::get('/images/{id}', [ImageController::class, 'show']);
 Route::delete('/images/{id}', [ImageController::class, 'destroy']);
 
+
+// controlador por defecto
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
