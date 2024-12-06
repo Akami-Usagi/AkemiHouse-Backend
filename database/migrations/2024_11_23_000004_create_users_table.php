@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('phone');
             $table->string('email')->unique();
             $table->string('password');
-            $table->foreignIdFor(\App\Models\Image::class)->constrained()->nullable();
+            $table->foreignIdFor(\App\Models\Image::class)->nullable()->constrained();
             $table->rememberToken();
             $table->timestamps();
         });

@@ -22,21 +22,21 @@ class UserController extends Controller
     {
         // Validar los datos recibidos
         $request->validate([
-            'name' => 'required|string', // Cambia según tus necesidades
-            'document' => 'required|string',
-            'phone' => 'required|string',
-            'email' => 'required|string',
-            'password' => 'required|string',
+            'name' => 'required|string|max:255', // Cambia según tus necesidades
+            'document' => 'required|string|max:255',
+            'phone' => 'required|string|max:15',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|string|min:6',
         ]);
 
         
         // Crear un nuevo registro en la base de datos
         $product = User::create([
             'name' => $request->name,
-            'document' => $request->description,
-            'phone' => $request->stock,
-            'email' => $request->price,
-            'password' => $request->category_id,
+            'document' => $request->document,
+            'phone' => $request->phone,
+            'email' => $request->email,
+            'password' => $request->password,
             'image_id' => null,
         ]);
 
