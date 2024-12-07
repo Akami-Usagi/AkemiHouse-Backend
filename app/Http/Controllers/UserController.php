@@ -4,12 +4,45 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+
 
 class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+
+     public function login(Request $request)
+    {
+        // Validar los datos del formulario
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required'
+        ]);
+
+        // Buscar al usuario por email
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user) {
+            return response()->json(['message' => 'User not found'], 404);
+        }
+
+        // Validar que el usuario exista y que la contraseña sea correcta
+        if ($user && Hash::check($request->password, $user->password)) {
+            return response()->json([
+                'message' => 'Login successful',
+                'user' => $user
+            ]);
+        }
+
+        // Responder con error si las credenciales no son correctas
+        return response()->json([
+            'message' => 'Invalid credentials'
+        ], 401);
+    }
+
+
     public function index()
     {
         //
