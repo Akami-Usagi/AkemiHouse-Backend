@@ -31,7 +31,7 @@ class UserController extends Controller
         // Validar que el usuario exista y que la contraseña sea correcta
         if ($user && Hash::check($request->password, $user->password)) {
             return response()->json([
-                'message' => 'Login successful',
+                'message' => 'Bienvenido a Akemi House',
                 'user' => $user
             ]);
         }
