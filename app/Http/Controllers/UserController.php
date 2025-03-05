@@ -64,7 +64,7 @@ class UserController extends Controller
 
         
         // Crear un nuevo registro en la base de datos
-        $product = User::create([
+        $user = User::create([
             'name' => $request->name,
             'document' => $request->document,
             'phone' => $request->phone,
@@ -78,7 +78,7 @@ class UserController extends Controller
         //Retornar una respuesta
         return response()->json([
             'message' => 'Datos guardados con éxito',
-            'data' => $product,
+            'data' => $user,
         ]);
     }
 
